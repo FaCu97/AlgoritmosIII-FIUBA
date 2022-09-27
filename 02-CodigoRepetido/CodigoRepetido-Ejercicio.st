@@ -72,7 +72,7 @@ test04CanNotRemoveAnInvalidCustomer
 			self assert: (customerBook includesCustomerNamed: johnLennon) ]
 		description: 'Can not remove an invalid customer'.! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FG 9/24/2022 18:52:29'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'FG 9/27/2022 14:31:28'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	| paulMcCartney|
 	
@@ -81,12 +81,10 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	customerBook addCustomerNamed: paulMcCartney.
 	customerBook suspendCustomerNamed: paulMcCartney.
 	
-	self assert: 0 equals: customerBook numberOfActiveCustomers.
-	self assert: 1 equals: customerBook numberOfSuspendedCustomers.
-	self assert: 1 equals: customerBook numberOfCustomers.
+	self assertNumberOfActiveCustomerIs: 0 andSuspendedCustomersIs: 1 andCustomersIs: 1.
 	self assert: (customerBook includesCustomerNamed: paulMcCartney).! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FG 9/24/2022 18:52:37'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'FG 9/27/2022 14:31:04'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	|  paulMcCartney|
 
@@ -96,9 +94,7 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	customerBook suspendCustomerNamed: paulMcCartney.
 	customerBook removeCustomerNamed: paulMcCartney.
 	
-	self assert: 0 equals: customerBook numberOfActiveCustomers.
-	self assert: 0 equals: customerBook numberOfSuspendedCustomers.
-	self assert: 0 equals: customerBook numberOfCustomers.
+	self assertNumberOfActiveCustomerIs: 0 andSuspendedCustomersIs: 0 andCustomersIs: 0.
 	self deny: (customerBook includesCustomerNamed: paulMcCartney).! !
 
 !CustomerBookTest methodsFor: 'testing' stamp: 'FG 9/24/2022 18:56:37'!
@@ -131,6 +127,12 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 setUp	
 	customerBook := CustomerBook new.! !
 
+
+!CustomerBookTest methodsFor: 'assertions' stamp: 'FG 9/27/2022 14:26:31'!
+assertNumberOfActiveCustomerIs: numberActives andSuspendedCustomersIs: numberSuspended andCustomersIs: numberCustomers
+	self assert: numberActives equals: customerBook numberOfActiveCustomers.
+	self assert: numberSuspended equals: customerBook numberOfSuspendedCustomers.
+	self assert: numberCustomers equals: customerBook numberOfCustomers.! !
 
 !CustomerBookTest methodsFor: 'assertions' stamp: 'FG 9/25/2022 17:09:02'!
 should: aClosure takeLessThan: aLimit 
